@@ -2,6 +2,7 @@ package com.vulneye.platform.controller;
 
 import com.vulneye.platform.dto.ApiResponse;
 import com.vulneye.platform.dto.auth.LoginRequest;
+import com.vulneye.platform.dto.auth.LoginResponse;
 import com.vulneye.platform.service.interfaces.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
             @Valid @RequestBody LoginRequest loginRequest) {
 
-        authenticationService.authenticate(loginRequest);
+        LoginResponse response = authenticationService.login(loginRequest);
 
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         true,
                         "Login successful",
-                        "Authentication successful"
-                )
-        );
+                        response));
     }
 }
