@@ -4,6 +4,7 @@ import com.vulneye.platform.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -76,9 +77,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthorizationDenied(
+            AuthorizationDeniedException ex) {
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                false,
+                "Access denied",
+                null);
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(
             Exception ex) {
+
+        ex.printStackTrace();
 
         ApiResponse<Void> response = new ApiResponse<>(
                 false,

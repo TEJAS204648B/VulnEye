@@ -5,6 +5,7 @@ import com.vulneye.platform.dto.user.CreateUserRequest;
 import com.vulneye.platform.dto.user.UserResponse;
 import com.vulneye.platform.service.interfaces.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<UserResponse> createUser(
             @Valid @RequestBody CreateUserRequest request) {
 
@@ -30,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
     public ApiResponse<List<UserResponse>> getAllUsers() {
 
         return new ApiResponse<>(
@@ -39,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<UserResponse> getUserById(
             @PathVariable Long id) {
 
@@ -49,6 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<UserResponse> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody CreateUserRequest request) {
@@ -60,6 +65,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<Void> deleteUser(
             @PathVariable Long id) {
 

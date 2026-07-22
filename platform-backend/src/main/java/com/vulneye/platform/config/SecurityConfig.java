@@ -1,28 +1,38 @@
 package com.vulneye.platform.config;
 
+import com.vulneye.platform.security.CustomAccessDeniedHandler;
+import com.vulneye.platform.security.CustomAuthenticationEntryPoint;
 import com.vulneye.platform.security.CustomUserDetailsService;
 import com.vulneye.platform.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     public SecurityConfig(
             CustomUserDetailsService customUserDetailsService,
-            JwtAuthenticationFilter jwtAuthenticationFilter) {
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CustomAuthenticationEntryPoint authenticationEntryPoint,
+            CustomAccessDeniedHandler accessDeniedHandler) {
 
         this.customUserDetailsService = customUserDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -32,6 +42,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler))
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
