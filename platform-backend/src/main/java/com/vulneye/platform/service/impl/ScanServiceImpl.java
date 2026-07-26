@@ -9,8 +9,10 @@ import com.vulneye.platform.entity.enums.ScanStatus;
 import com.vulneye.platform.exception.ResourceNotFoundException;
 import com.vulneye.platform.repository.AssetRepository;
 import com.vulneye.platform.repository.ScanRepository;
+import com.vulneye.platform.service.interfaces.ScanExecutionService;
 import com.vulneye.platform.service.interfaces.ScanService;
 import org.springframework.stereotype.Service;
+import com.vulneye.platform.scanner.factory.ScannerFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,11 +22,16 @@ public class ScanServiceImpl implements ScanService {
 
     private final ScanRepository scanRepository;
     private final AssetRepository assetRepository;
+    private final ScanExecutionService scanExecutionService;
 
-    public ScanServiceImpl(ScanRepository scanRepository,
-            AssetRepository assetRepository) {
+    public ScanServiceImpl(
+            ScanRepository scanRepository,
+            AssetRepository assetRepository,
+            ScanExecutionService scanExecutionService) {
+
         this.scanRepository = scanRepository;
         this.assetRepository = assetRepository;
+        this.scanExecutionService = scanExecutionService;;
     }
 
     @Override
@@ -42,6 +49,8 @@ public class ScanServiceImpl implements ScanService {
         scan.setStartedAt(LocalDateTime.now());
 
         Scan savedScan = scanRepository.save(scan);
+
+        scanExecutionService.executeScan(savedScan);
 
         return mapToResponse(savedScan);
     }
