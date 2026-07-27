@@ -1,0 +1,27 @@
+info:
+  name: scan post
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/scans"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NTA4OTk2OCwiZXhwIjoxNzg1MTc2MzY4fQ.wNK6Zg--Pv8_xTDdERSIydmD5_hcXS9F5F2_YO5OSNWaD12BPJ8azvLAlNtJxdlwh1CZ2N6Yv0oagYL0V2Jabg
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+          "assetId": 2,
+          "scanType": "NMAP"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

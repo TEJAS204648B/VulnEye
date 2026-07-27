@@ -1,0 +1,27 @@
+info:
+  name: assets
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/assets"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NDgyODgwMywiZXhwIjoxNzg0OTE1MjAzfQ.zcCkRnRnhhunmfBufImuwZeTeDO5KypwjD-8-M0fIT-bMfRw5tB7-YiOaYNnMuRJVuHIuIrT6gjh1yHYJRQg7g
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Duplicate Google",
+        "target": "https://google.com",
+        "type": "WEB",
+        "description": "Duplicate"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

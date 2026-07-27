@@ -1,0 +1,20 @@
+info:
+  name: Profile Test
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/users"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NDc1MTEzMiwiZXhwIjoxNzg0ODM3NTMyfQ.HPhiOSYdt52U40gEkCOhGA3BGCI54__SgCNTw3D_09MmwPYdq_-td2GEy5YRWKO1KxeoynBC2m2FG2_lEdadTw
+    - name: Content-Type
+      value: application/json
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

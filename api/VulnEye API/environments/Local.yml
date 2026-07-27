@@ -1,0 +1,6 @@
+name: Local
+variables:
+  - name: baseUrl
+    value: http://localhost:8080
+  - name: jwtToken
+    value: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NTA4OTk2OCwiZXhwIjoxNzg1MTc2MzY4fQ.wNK6Zg--Pv8_xTDdERSIydmD5_hcXS9F5F2_YO5OSNWaD12BPJ8azvLAlNtJxdlwh1CZ2N6Yv0oagYL0V2Jabg
