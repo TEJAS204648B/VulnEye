@@ -10,6 +10,7 @@ import com.vulneye.platform.repository.AssetRepository;
 import com.vulneye.platform.service.interfaces.AssetService;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -24,13 +25,15 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public AssetResponse createAsset(CreateAssetRequest request) {
 
-        if (assetRepository.existsByTarget(request.getTarget())) {
+        String normalizedTarget = normalizeTarget(request.getTarget());
+
+        if (assetRepository.existsByTarget(normalizedTarget)) {
             throw new BadRequestException("Asset with this target already exists");
         }
 
         Asset asset = new Asset();
         asset.setName(request.getName());
-        asset.setTarget(request.getTarget());
+        asset.setTarget(normalizedTarget);
         asset.setType(request.getType());
         asset.setDescription(request.getDescription());
         asset.setStatus(request.getStatus());
@@ -64,14 +67,16 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found with id: " + id));
 
-        if (!asset.getTarget().equals(request.getTarget())
-                && assetRepository.existsByTarget(request.getTarget())) {
+        String normalizedTarget = normalizeTarget(request.getTarget());
+
+        if (!asset.getTarget().equals(normalizedTarget)
+                && assetRepository.existsByTarget(normalizedTarget)) {
 
             throw new BadRequestException("Asset with this target already exists");
         }
 
         asset.setName(request.getName());
-        asset.setTarget(request.getTarget());
+        asset.setTarget(normalizedTarget);
         asset.setType(request.getType());
         asset.setDescription(request.getDescription());
         asset.setStatus(request.getStatus());
@@ -104,5 +109,33 @@ public class AssetServiceImpl implements AssetService {
         response.setUpdatedAt(asset.getUpdatedAt());
 
         return response;
+    }
+
+    private String normalizeTarget(String target) {
+
+        if (target == null || target.isBlank()) {
+            throw new BadRequestException("Target must not be empty");
+        }
+
+        target = target.trim();
+
+        try {
+
+            if (target.startsWith("http://") || target.startsWith("https://")) {
+
+                URI uri = URI.create(target);
+
+                if (uri.getHost() == null || uri.getHost().isBlank()) {
+                    throw new BadRequestException("Invalid target");
+                }
+
+                return uri.getHost();
+            }
+
+            return target.replaceAll("/+$", "");
+
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException("Invalid target");
+        }
     }
 }

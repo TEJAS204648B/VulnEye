@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 public class CommandExecutor {
 
-    public CommandResult execute(List<String> command)
+    public CommandResult execute(CommandRequest request)
             throws IOException, InterruptedException {
 
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
+        ProcessBuilder processBuilder = new ProcessBuilder(request.getCommand());
 
         Process process = processBuilder.start();
 
