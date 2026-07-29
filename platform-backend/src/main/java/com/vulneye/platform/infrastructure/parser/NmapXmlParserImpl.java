@@ -59,19 +59,19 @@ public class NmapXmlParserImpl implements NmapXmlParser {
                 NodeList statusNodes = hostElement.getElementsByTagName("status");
                 if (statusNodes.getLength() > 0) {
                     Element statusElement = (Element) statusNodes.item(0);
-                    hostResult.setStatus(statusElement.getAttribute("state"));
+                    hostResult.setStatus(normalize(statusElement.getAttribute("state")));
                 }
 
                 NodeList addressNodes = hostElement.getElementsByTagName("address");
                 if (addressNodes.getLength() > 0) {
                     Element addressElement = (Element) addressNodes.item(0);
-                    hostResult.setAddress(addressElement.getAttribute("addr"));
+                    hostResult.setAddress(normalize(addressElement.getAttribute("addr")));
                 }
 
                 NodeList hostnameNodes = hostElement.getElementsByTagName("hostname");
                 if (hostnameNodes.getLength() > 0) {
                     Element hostnameElement = (Element) hostnameNodes.item(0);
-                    hostResult.setHostname(hostnameElement.getAttribute("name"));
+                    hostResult.setHostname(normalize(hostnameElement.getAttribute("name")));
                 }
 
                 NodeList portNodes = hostElement.getElementsByTagName("port");
@@ -82,19 +82,24 @@ public class NmapXmlParserImpl implements NmapXmlParser {
 
                     NmapPortResult portResult = new NmapPortResult();
 
-                    portResult.setPort(portElement.getAttribute("portid"));
-                    portResult.setProtocol(portElement.getAttribute("protocol"));
+                    portResult.setPort(normalize(portElement.getAttribute("portid")));
+                    portResult.setProtocol(normalize(portElement.getAttribute("protocol")));
 
                     NodeList stateNodes = portElement.getElementsByTagName("state");
                     if (stateNodes.getLength() > 0) {
                         Element stateElement = (Element) stateNodes.item(0);
-                        portResult.setState(stateElement.getAttribute("state"));
+                        portResult.setState(normalize(stateElement.getAttribute("state")));
                     }
 
                     NodeList serviceNodes = portElement.getElementsByTagName("service");
                     if (serviceNodes.getLength() > 0) {
+
                         Element serviceElement = (Element) serviceNodes.item(0);
-                        portResult.setService(serviceElement.getAttribute("name"));
+
+                        portResult.setService(normalize(serviceElement.getAttribute("name")));
+                        portResult.setProduct(normalize(serviceElement.getAttribute("product")));
+                        portResult.setVersion(normalize(serviceElement.getAttribute("version")));
+                        portResult.setExtraInfo(normalize(serviceElement.getAttribute("extrainfo")));
                     }
 
                     hostResult.getPorts().add(portResult);
@@ -108,5 +113,17 @@ public class NmapXmlParserImpl implements NmapXmlParser {
         } catch (Exception ex) {
             throw new IOException("Failed to parse Nmap XML report.", ex);
         }
+    }
+
+    /**
+     * Returns null if the value is null or blank.
+     */
+    private String normalize(String value) {
+
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+
+        return value;
     }
 }

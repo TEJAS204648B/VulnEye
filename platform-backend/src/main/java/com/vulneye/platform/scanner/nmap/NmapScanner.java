@@ -50,11 +50,18 @@ public class NmapScanner extends AbstractScanner {
         CommandRequest request = new CommandRequest(
                 List.of(
                         "nmap",
+                        "-sV",
                         "-oX",
                         reportPath,
                         scan.getAsset().getTarget()));
 
+        logger.info("Nmap command: {}", request.getCommand());
+        logger.info("Report path: {}", reportPath);
+
         CommandResult result = commandExecutor.execute(request);
+
+        logger.info("Nmap exit code: {}", result.getExitCode());
+        logger.info("Nmap stderr: {}", result.getStderr());
 
         if (!result.isSuccess()) {
             throw new RuntimeException(

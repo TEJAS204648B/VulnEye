@@ -3,10 +3,21 @@ package com.vulneye.platform.dto.response;
 public class FindingResponse {
 
     private String hostAddress;
+
     private String hostname;
+
     private Integer port;
+
     private String protocol;
+
     private String service;
+
+    private String product;
+
+    private String version;
+
+    private String extraInfo;
+
     private String state;
 
     public FindingResponse() {
@@ -50,6 +61,30 @@ public class FindingResponse {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
     }
 
     public String getState() {

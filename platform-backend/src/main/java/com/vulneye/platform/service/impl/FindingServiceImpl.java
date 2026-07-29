@@ -38,9 +38,16 @@ public class FindingServiceImpl implements FindingService {
                 finding.setScan(scan);
                 finding.setHostAddress(host.getAddress());
                 finding.setHostname(host.getHostname());
+
                 finding.setPort(Integer.parseInt(port.getPort()));
                 finding.setProtocol(port.getProtocol());
                 finding.setService(port.getService());
+
+                // New fields
+                finding.setProduct(port.getProduct());
+                finding.setVersion(port.getVersion());
+                finding.setExtraInfo(port.getExtraInfo());
+
                 finding.setState(port.getState());
 
                 findings.add(finding);
@@ -57,6 +64,7 @@ public class FindingServiceImpl implements FindingService {
     public List<FindingResponse> getFindingsByScanId(Long scanId) {
 
         List<Finding> findings = findingRepository.findByScanId(scanId);
+
         List<FindingResponse> responses = new ArrayList<>();
 
         for (Finding finding : findings) {
@@ -68,6 +76,12 @@ public class FindingServiceImpl implements FindingService {
             response.setPort(finding.getPort());
             response.setProtocol(finding.getProtocol());
             response.setService(finding.getService());
+
+            // New fields
+            response.setProduct(finding.getProduct());
+            response.setVersion(finding.getVersion());
+            response.setExtraInfo(finding.getExtraInfo());
+
             response.setState(finding.getState());
 
             responses.add(response);

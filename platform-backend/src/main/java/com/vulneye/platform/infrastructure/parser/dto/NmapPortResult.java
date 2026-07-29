@@ -10,6 +10,12 @@ public class NmapPortResult {
 
     private String service;
 
+    private String product;
+
+    private String version;
+
+    private String extraInfo;
+
     public String getPort() {
         return port;
     }
@@ -40,5 +46,29 @@ public class NmapPortResult {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
     }
 }

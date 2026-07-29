@@ -28,8 +28,17 @@ public class Finding {
     @Column(nullable = false, length = 10)
     private String protocol;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String service;
+
+    @Column(length = 150)
+    private String product;
+
+    @Column(length = 100)
+    private String version;
+
+    @Column(name = "extra_info", length = 255)
+    private String extraInfo;
 
     @Column(nullable = false, length = 20)
     private String state;
@@ -92,6 +101,30 @@ public class Finding {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
     }
 
     public String getState() {
