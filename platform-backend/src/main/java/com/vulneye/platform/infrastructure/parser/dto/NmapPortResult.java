@@ -1,5 +1,8 @@
 package com.vulneye.platform.infrastructure.parser.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NmapPortResult {
 
     private String port;
@@ -15,6 +18,8 @@ public class NmapPortResult {
     private String version;
 
     private String extraInfo;
+
+    private List<NmapScriptResult> scripts = new ArrayList<>();
 
     public String getPort() {
         return port;
@@ -70,5 +75,13 @@ public class NmapPortResult {
 
     public void setExtraInfo(String extraInfo) {
         this.extraInfo = extraInfo;
+    }
+
+    public List<NmapScriptResult> getScripts() {
+        return scripts;
+    }
+
+    public void setScripts(List<NmapScriptResult> scripts) {
+        this.scripts = scripts;
     }
 }

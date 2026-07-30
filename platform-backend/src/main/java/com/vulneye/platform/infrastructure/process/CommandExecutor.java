@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class CommandExecutor {
@@ -17,10 +19,20 @@ public class CommandExecutor {
 
         Process process = processBuilder.start();
 
-        String stdout = readStream(process.getInputStream());
-        String stderr = readStream(process.getErrorStream());
+        System.out.println("Process started...");
+
+        CompletableFuture<String> stdoutFuture = CompletableFuture
+                .supplyAsync(() -> readStream(process.getInputStream()));
+
+        CompletableFuture<String> stderrFuture = CompletableFuture
+                .supplyAsync(() -> readStream(process.getErrorStream()));
 
         int exitCode = process.waitFor();
+
+        System.out.println("Process finished with exit code: " + exitCode);
+
+        String stdout = stdoutFuture.join();
+        String stderr = stderrFuture.join();
 
         return new CommandResult(
                 exitCode,
@@ -28,12 +40,12 @@ public class CommandExecutor {
                 stderr);
     }
 
-    private String readStream(java.io.InputStream inputStream)
-            throws IOException {
+    private String readStream(InputStream inputStream) {
 
         StringBuilder builder = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
             String line;
 
@@ -41,6 +53,9 @@ public class CommandExecutor {
                 builder.append(line)
                         .append(System.lineSeparator());
             }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return builder.toString();

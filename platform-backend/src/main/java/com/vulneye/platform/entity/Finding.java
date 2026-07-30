@@ -3,6 +3,8 @@ package com.vulneye.platform.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "findings")
@@ -42,6 +44,9 @@ public class Finding {
 
     @Column(nullable = false, length = 20)
     private String state;
+
+    @OneToMany(mappedBy = "finding", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Vulnerability> vulnerabilities = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -135,7 +140,25 @@ public class Finding {
         this.state = state;
     }
 
+    public List<Vulnerability> getVulnerabilities() {
+        return vulnerabilities;
+    }
+
+    public void setVulnerabilities(List<Vulnerability> vulnerabilities) {
+        this.vulnerabilities = vulnerabilities;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addVulnerability(Vulnerability vulnerability) {
+        vulnerabilities.add(vulnerability);
+        vulnerability.setFinding(this);
+    }
+
+    public void removeVulnerability(Vulnerability vulnerability) {
+        vulnerabilities.remove(vulnerability);
+        vulnerability.setFinding(null);
     }
 }

@@ -4,6 +4,9 @@ import com.vulneye.platform.entity.Scan;
 import com.vulneye.platform.infrastructure.parser.dto.NmapHostResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapPortResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapScanResult;
+import com.vulneye.platform.infrastructure.parser.dto.NmapScriptResult;
+import com.vulneye.platform.infrastructure.parser.dto.NmapScriptResult;
+
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -100,6 +103,28 @@ public class NmapXmlParserImpl implements NmapXmlParser {
                         portResult.setProduct(normalize(serviceElement.getAttribute("product")));
                         portResult.setVersion(normalize(serviceElement.getAttribute("version")));
                         portResult.setExtraInfo(normalize(serviceElement.getAttribute("extrainfo")));
+                    }
+
+                    NodeList scriptNodes = portElement.getElementsByTagName("script");
+
+                    for (int k = 0; k < scriptNodes.getLength(); k++) {
+
+                        Element scriptElement = (Element) scriptNodes.item(k);
+
+                        NmapScriptResult scriptResult = new NmapScriptResult();
+
+                        scriptResult.setId(normalize(scriptElement.getAttribute("id")));
+                        scriptResult.setOutput(normalize(scriptElement.getAttribute("output")));
+
+                        portResult.getScripts().add(scriptResult);
+                    }
+
+                    for (NmapScriptResult script : portResult.getScripts()) {
+                        System.out.println(
+                                "[NSE] Port "
+                                        + portResult.getPort()
+                                        + " Script="
+                                        + script.getId());
                     }
 
                     hostResult.getPorts().add(portResult);

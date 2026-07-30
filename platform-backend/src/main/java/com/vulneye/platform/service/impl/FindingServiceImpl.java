@@ -8,6 +8,8 @@ import com.vulneye.platform.infrastructure.parser.dto.NmapPortResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapScanResult;
 import com.vulneye.platform.repository.FindingRepository;
 import com.vulneye.platform.service.FindingService;
+import com.vulneye.platform.service.VulnerabilityService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +21,11 @@ import java.util.List;
 public class FindingServiceImpl implements FindingService {
 
     private final FindingRepository findingRepository;
+    private final VulnerabilityService vulnerabilityService;
 
-    public FindingServiceImpl(FindingRepository findingRepository) {
+    public FindingServiceImpl(FindingRepository findingRepository, VulnerabilityService vulnerabilityService) {
         this.findingRepository = findingRepository;
+        this.vulnerabilityService = vulnerabilityService;
     }
 
     @Override
@@ -41,14 +45,24 @@ public class FindingServiceImpl implements FindingService {
 
                 finding.setPort(Integer.parseInt(port.getPort()));
                 finding.setProtocol(port.getProtocol());
-                finding.setService(port.getService());
+                finding.setService(
+                        port.getService() != null
+                                ? port.getService()
+                                : "unknown");
 
-                // New fields
                 finding.setProduct(port.getProduct());
                 finding.setVersion(port.getVersion());
                 finding.setExtraInfo(port.getExtraInfo());
 
                 finding.setState(port.getState());
+
+                System.out.println("--------------------------------");
+                System.out.println("Host     : " + host.getAddress());
+                System.out.println("Port     : " + port.getPort());
+                System.out.println("Protocol : " + port.getProtocol());
+                System.out.println("Service  : " + port.getService());
+                System.out.println("State    : " + port.getState());
+                System.out.println("Product  : " + port.getProduct());
 
                 findings.add(finding);
             }
@@ -77,7 +91,6 @@ public class FindingServiceImpl implements FindingService {
             response.setProtocol(finding.getProtocol());
             response.setService(finding.getService());
 
-            // New fields
             response.setProduct(finding.getProduct());
             response.setVersion(finding.getVersion());
             response.setExtraInfo(finding.getExtraInfo());
@@ -88,5 +101,11 @@ public class FindingServiceImpl implements FindingService {
         }
 
         return responses;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Finding> findByScan(Scan scan) {
+        return findingRepository.findByScan(scan);
     }
 }
