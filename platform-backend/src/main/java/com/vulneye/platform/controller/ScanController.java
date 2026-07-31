@@ -8,6 +8,7 @@ import com.vulneye.platform.service.interfaces.ScanService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.vulneye.platform.dto.scan.ScanDetailsResponse;
 
 import java.util.List;
 
@@ -15,77 +16,88 @@ import java.util.List;
 @RequestMapping("/api/scans")
 public class ScanController {
 
-    private final ScanService scanService;
+        private final ScanService scanService;
 
-    public ScanController(ScanService scanService) {
-        this.scanService = scanService;
-    }
+        public ScanController(ScanService scanService) {
+                this.scanService = scanService;
+        }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
-    public ApiResponse<ScanResponse> createScan(
-            @Valid @RequestBody CreateScanRequest request) {
+        @PostMapping
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
+        public ApiResponse<ScanResponse> createScan(
+                        @Valid @RequestBody CreateScanRequest request) {
 
-        return new ApiResponse<>(
-                true,
-                "Scan created successfully",
-                scanService.createScan(request));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Scan created successfully",
+                                scanService.createScan(request));
+        }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<List<ScanResponse>> getAllScans() {
+        @GetMapping
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<List<ScanResponse>> getAllScans() {
 
-        return new ApiResponse<>(
-                true,
-                "Scans retrieved successfully",
-                scanService.getAllScans());
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Scans retrieved successfully",
+                                scanService.getAllScans());
+        }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<ScanResponse> getScanById(
-            @PathVariable Long id) {
+        @GetMapping("/{id}")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<ScanResponse> getScanById(
+                        @PathVariable Long id) {
 
-        return new ApiResponse<>(
-                true,
-                "Scan retrieved successfully",
-                scanService.getScanById(id));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Scan retrieved successfully",
+                                scanService.getScanById(id));
+        }
 
-    @GetMapping("/asset/{assetId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<List<ScanResponse>> getScansByAsset(
-            @PathVariable Long assetId) {
+        @GetMapping("/{id}/details")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<ScanDetailsResponse> getScanDetails(
+                        @PathVariable Long id) {
 
-        return new ApiResponse<>(
-                true,
-                "Asset scan history retrieved successfully",
-                scanService.getScansByAsset(assetId));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Scan details retrieved successfully",
+                                scanService.getScanDetails(id));
+        }
 
-    @PutMapping("/{id}/status")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
-    public ApiResponse<ScanResponse> updateScanStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateScanStatusRequest request) {
+        @GetMapping("/asset/{assetId}")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<List<ScanResponse>> getScansByAsset(
+                        @PathVariable Long assetId) {
 
-        return new ApiResponse<>(
-                true,
-                "Scan status updated successfully",
-                scanService.updateScanStatus(id, request));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Asset scan history retrieved successfully",
+                                scanService.getScansByAsset(assetId));
+        }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<Void> deleteScan(
-            @PathVariable Long id) {
+        @PutMapping("/{id}/status")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
+        public ApiResponse<ScanResponse> updateScanStatus(
+                        @PathVariable Long id,
+                        @Valid @RequestBody UpdateScanStatusRequest request) {
 
-        scanService.deleteScan(id);
+                return new ApiResponse<>(
+                                true,
+                                "Scan status updated successfully",
+                                scanService.updateScanStatus(id, request));
+        }
 
-        return new ApiResponse<>(
-                true,
-                "Scan deleted successfully",
-                null);
-    }
+        @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
+        public ApiResponse<Void> deleteScan(
+                        @PathVariable Long id) {
+
+                scanService.deleteScan(id);
+
+                return new ApiResponse<>(
+                                true,
+                                "Scan deleted successfully",
+                                null);
+        }
 }
