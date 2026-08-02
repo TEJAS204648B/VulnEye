@@ -1,5 +1,7 @@
 package com.vulneye.platform.infrastructure.process;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -12,6 +14,8 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class CommandExecutor {
 
+    private static final Logger logger = LoggerFactory.getLogger(CommandExecutor.class);
+
     public CommandResult execute(CommandRequest request)
             throws IOException, InterruptedException {
 
@@ -19,7 +23,7 @@ public class CommandExecutor {
 
         Process process = processBuilder.start();
 
-        System.out.println("Process started...");
+        logger.info("Process started.");
 
         CompletableFuture<String> stdoutFuture = CompletableFuture
                 .supplyAsync(() -> readStream(process.getInputStream()));
@@ -29,7 +33,7 @@ public class CommandExecutor {
 
         int exitCode = process.waitFor();
 
-        System.out.println("Process finished with exit code: " + exitCode);
+        logger.info("Process finished with exit code: {}", exitCode);
 
         String stdout = stdoutFuture.join();
         String stderr = stderrFuture.join();
@@ -55,6 +59,9 @@ public class CommandExecutor {
             }
 
         } catch (IOException e) {
+
+            logger.error("Failed to read process stream.", e);
+
             throw new RuntimeException(e);
         }
 

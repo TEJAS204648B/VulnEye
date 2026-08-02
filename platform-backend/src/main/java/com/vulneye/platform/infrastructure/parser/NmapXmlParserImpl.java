@@ -5,7 +5,8 @@ import com.vulneye.platform.infrastructure.parser.dto.NmapHostResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapPortResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapScanResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapScriptResult;
-import com.vulneye.platform.infrastructure.parser.dto.NmapScriptResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -20,6 +21,8 @@ import java.io.IOException;
 
 @Service
 public class NmapXmlParserImpl implements NmapXmlParser {
+
+    private static final Logger logger = LoggerFactory.getLogger(NmapXmlParserImpl.class);
 
     @Override
     public NmapScanResult parse(Scan scan) throws IOException {
@@ -120,11 +123,11 @@ public class NmapXmlParserImpl implements NmapXmlParser {
                     }
 
                     for (NmapScriptResult script : portResult.getScripts()) {
-                        System.out.println(
-                                "[NSE] Port "
-                                        + portResult.getPort()
-                                        + " Script="
-                                        + script.getId());
+
+                        logger.debug(
+                                "[NSE] Port {} Script={}",
+                                portResult.getPort(),
+                                script.getId());
                     }
 
                     hostResult.getPorts().add(portResult);
@@ -136,6 +139,12 @@ public class NmapXmlParserImpl implements NmapXmlParser {
             return scanResult;
 
         } catch (Exception ex) {
+
+            logger.error(
+                    "Failed to parse Nmap XML report: {}",
+                    reportFile.getAbsolutePath(),
+                    ex);
+
             throw new IOException("Failed to parse Nmap XML report.", ex);
         }
     }

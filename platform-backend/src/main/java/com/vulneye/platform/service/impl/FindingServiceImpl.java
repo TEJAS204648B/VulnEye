@@ -9,7 +9,8 @@ import com.vulneye.platform.infrastructure.parser.dto.NmapScanResult;
 import com.vulneye.platform.repository.FindingRepository;
 import com.vulneye.platform.service.interfaces.FindingService;
 import com.vulneye.platform.service.interfaces.VulnerabilityService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,15 @@ import java.util.List;
 @Transactional
 public class FindingServiceImpl implements FindingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FindingServiceImpl.class);
+
     private final FindingRepository findingRepository;
     private final VulnerabilityService vulnerabilityService;
 
-    public FindingServiceImpl(FindingRepository findingRepository, VulnerabilityService vulnerabilityService) {
+    public FindingServiceImpl(
+            FindingRepository findingRepository,
+            VulnerabilityService vulnerabilityService) {
+
         this.findingRepository = findingRepository;
         this.vulnerabilityService = vulnerabilityService;
     }
@@ -56,19 +62,23 @@ public class FindingServiceImpl implements FindingService {
 
                 finding.setState(port.getState());
 
-                System.out.println("--------------------------------");
-                System.out.println("Host     : " + host.getAddress());
-                System.out.println("Port     : " + port.getPort());
-                System.out.println("Protocol : " + port.getProtocol());
-                System.out.println("Service  : " + port.getService());
-                System.out.println("State    : " + port.getState());
-                System.out.println("Product  : " + port.getProduct());
+                logger.debug(
+                        "Discovered finding: host={}, port={}, protocol={}, service={}, state={}, product={}",
+                        host.getAddress(),
+                        port.getPort(),
+                        port.getProtocol(),
+                        port.getService(),
+                        port.getState(),
+                        port.getProduct());
 
                 findings.add(finding);
             }
         }
 
         if (!findings.isEmpty()) {
+
+            logger.info("Saving {} findings for scan {}", findings.size(), scan.getId());
+
             findingRepository.saveAll(findings);
         }
     }
