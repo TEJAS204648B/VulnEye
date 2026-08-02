@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public class UpdateAssetRequest {
 
     @NotBlank(message = "Asset name is required")
-    @Size(max = 100, message = "Asset name must not exceed 100 characters")
+    @Size(min = 3, max = 100, message = "Asset name must be between 3 and 100 characters")
     private String name;
 
     @NotBlank(message = "Target is required")

@@ -1,6 +1,8 @@
 package com.vulneye.platform.exception;
 
 import com.vulneye.platform.dto.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,11 +19,16 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(
             ResourceNotFoundException ex) {
 
-        ApiResponse<Void> response = new ApiResponse<>(false, ex.getMessage(), null);
+        ApiResponse<Void> response = new ApiResponse<>(
+                false,
+                ex.getMessage(),
+                null);
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -30,7 +37,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleBadRequest(
             BadRequestException ex) {
 
-        ApiResponse<Void> response = new ApiResponse<>(false, ex.getMessage(), null);
+        ApiResponse<Void> response = new ApiResponse<>(
+                false,
+                ex.getMessage(),
+                null);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -93,7 +103,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleGenericException(
             Exception ex) {
 
-        ex.printStackTrace();
+        logger.error("Unhandled exception occurred", ex);
 
         ApiResponse<Void> response = new ApiResponse<>(
                 false,

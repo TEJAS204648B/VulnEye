@@ -2,10 +2,12 @@ package com.vulneye.platform.dto.scan;
 
 import com.vulneye.platform.entity.enums.ScanType;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class CreateScanRequest {
 
     @NotNull(message = "Asset ID is required")
+    @Positive(message = "Asset ID must be greater than 0")
     private Long assetId;
 
     @NotNull(message = "Scan type is required")

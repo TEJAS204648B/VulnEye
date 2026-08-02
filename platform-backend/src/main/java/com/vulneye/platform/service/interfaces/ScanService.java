@@ -1,9 +1,9 @@
 package com.vulneye.platform.service.interfaces;
 
 import com.vulneye.platform.dto.scan.CreateScanRequest;
+import com.vulneye.platform.dto.scan.ScanDetailsResponse;
 import com.vulneye.platform.dto.scan.ScanResponse;
 import com.vulneye.platform.dto.scan.UpdateScanStatusRequest;
-import com.vulneye.platform.dto.scan.ScanDetailsResponse;
 
 import java.util.List;
 
@@ -17,10 +17,11 @@ public interface ScanService {
 
     List<ScanResponse> getScansByAsset(Long assetId);
 
-    ScanResponse updateScanStatus(Long id, UpdateScanStatusRequest request);
+    ScanResponse updateScanStatus(
+            Long id,
+            UpdateScanStatusRequest request);
 
     ScanDetailsResponse getScanDetails(Long scanId);
 
     void deleteScan(Long id);
-
 }

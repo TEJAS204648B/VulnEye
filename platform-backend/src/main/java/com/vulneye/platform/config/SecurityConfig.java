@@ -48,8 +48,18 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .anyRequest().authenticated())
+
+                        .requestMatchers(
+                                "/api/auth/login",
+
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+
+                        .permitAll()
+
+                        .anyRequest()
+                        .authenticated())
 
                 .httpBasic(httpBasic -> httpBasic.disable())
 
