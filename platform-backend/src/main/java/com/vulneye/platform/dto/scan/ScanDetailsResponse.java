@@ -1,7 +1,6 @@
 package com.vulneye.platform.dto.scan;
 
 import com.vulneye.platform.dto.response.FindingResponse;
-import com.vulneye.platform.dto.vulnerability.VulnerabilityResponse;
 
 import java.util.List;
 
@@ -11,8 +10,6 @@ public class ScanDetailsResponse {
 
     private ScanSummaryResponse summary;
     private List<FindingResponse> findings;
-
-    private List<VulnerabilityResponse> vulnerabilities;
 
     public ScanResponse getScan() {
         return scan;
@@ -38,11 +35,4 @@ public class ScanDetailsResponse {
         this.findings = findings;
     }
 
-    public List<VulnerabilityResponse> getVulnerabilities() {
-        return vulnerabilities;
-    }
-
-    public void setVulnerabilities(List<VulnerabilityResponse> vulnerabilities) {
-        this.vulnerabilities = vulnerabilities;
-    }
 }

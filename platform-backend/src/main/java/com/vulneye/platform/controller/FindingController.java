@@ -2,7 +2,8 @@ package com.vulneye.platform.controller;
 
 import com.vulneye.platform.dto.ApiResponse;
 import com.vulneye.platform.dto.response.FindingResponse;
-import com.vulneye.platform.service.FindingService;
+import com.vulneye.platform.service.interfaces.FindingService;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

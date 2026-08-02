@@ -1,4 +1,4 @@
-package com.vulneye.platform.service;
+package com.vulneye.platform.service.interfaces;
 
 import com.vulneye.platform.dto.response.FindingResponse;
 import com.vulneye.platform.entity.Finding;

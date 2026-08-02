@@ -4,12 +4,12 @@ import com.vulneye.platform.dto.ApiResponse;
 import com.vulneye.platform.dto.asset.AssetResponse;
 import com.vulneye.platform.dto.asset.CreateAssetRequest;
 import com.vulneye.platform.dto.asset.UpdateAssetRequest;
+import com.vulneye.platform.dto.common.PageResponse;
 import com.vulneye.platform.service.interfaces.AssetService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/assets")
@@ -34,12 +34,13 @@ public class AssetController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<List<AssetResponse>> getAllAssets() {
+    public ApiResponse<PageResponse<AssetResponse>> getAllAssets(
+            Pageable pageable) {
 
         return new ApiResponse<>(
                 true,
                 "Assets retrieved successfully",
-                assetService.getAllAssets());
+                assetService.getAllAssets(pageable));
     }
 
     @GetMapping("/{id}")

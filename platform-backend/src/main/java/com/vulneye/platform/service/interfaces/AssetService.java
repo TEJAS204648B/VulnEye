@@ -3,14 +3,14 @@ package com.vulneye.platform.service.interfaces;
 import com.vulneye.platform.dto.asset.AssetResponse;
 import com.vulneye.platform.dto.asset.CreateAssetRequest;
 import com.vulneye.platform.dto.asset.UpdateAssetRequest;
-
-import java.util.List;
+import com.vulneye.platform.dto.common.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 public interface AssetService {
 
     AssetResponse createAsset(CreateAssetRequest request);
 
-    List<AssetResponse> getAllAssets();
+    PageResponse<AssetResponse> getAllAssets(Pageable pageable);
 
     AssetResponse getAssetById(Long id);
 

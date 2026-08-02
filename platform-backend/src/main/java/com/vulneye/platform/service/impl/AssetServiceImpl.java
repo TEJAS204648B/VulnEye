@@ -3,11 +3,16 @@ package com.vulneye.platform.service.impl;
 import com.vulneye.platform.dto.asset.AssetResponse;
 import com.vulneye.platform.dto.asset.CreateAssetRequest;
 import com.vulneye.platform.dto.asset.UpdateAssetRequest;
+import com.vulneye.platform.dto.common.PageResponse;
 import com.vulneye.platform.entity.Asset;
 import com.vulneye.platform.exception.BadRequestException;
 import com.vulneye.platform.exception.ResourceNotFoundException;
 import com.vulneye.platform.repository.AssetRepository;
 import com.vulneye.platform.service.interfaces.AssetService;
+import com.vulneye.platform.util.PageMapper;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -44,12 +49,11 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public List<AssetResponse> getAllAssets() {
+    public PageResponse<AssetResponse> getAllAssets(Pageable pageable) {
 
-        return assetRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        Page<Asset> page = assetRepository.findAll(pageable);
+
+        return PageMapper.map(page, this::mapToResponse);
     }
 
     @Override

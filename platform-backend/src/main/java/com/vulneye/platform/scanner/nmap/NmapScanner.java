@@ -9,8 +9,8 @@ import com.vulneye.platform.infrastructure.process.CommandRequest;
 import com.vulneye.platform.infrastructure.process.CommandResult;
 import com.vulneye.platform.infrastructure.report.ReportPathService;
 import com.vulneye.platform.scanner.AbstractScanner;
-import com.vulneye.platform.service.FindingService;
-import com.vulneye.platform.service.VulnerabilityService;
+import com.vulneye.platform.service.interfaces.FindingService;
+import com.vulneye.platform.service.interfaces.VulnerabilityService;
 
 import org.springframework.stereotype.Component;
 

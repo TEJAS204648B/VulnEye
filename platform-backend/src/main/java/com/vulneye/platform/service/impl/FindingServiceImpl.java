@@ -7,8 +7,8 @@ import com.vulneye.platform.infrastructure.parser.dto.NmapHostResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapPortResult;
 import com.vulneye.platform.infrastructure.parser.dto.NmapScanResult;
 import com.vulneye.platform.repository.FindingRepository;
-import com.vulneye.platform.service.FindingService;
-import com.vulneye.platform.service.VulnerabilityService;
+import com.vulneye.platform.service.interfaces.FindingService;
+import com.vulneye.platform.service.interfaces.VulnerabilityService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

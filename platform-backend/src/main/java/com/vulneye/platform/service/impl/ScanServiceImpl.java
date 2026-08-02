@@ -1,30 +1,28 @@
 package com.vulneye.platform.service.impl;
 
+import com.vulneye.platform.dto.common.PageResponse;
 import com.vulneye.platform.dto.scan.CreateScanRequest;
+import com.vulneye.platform.dto.scan.ScanDetailsResponse;
 import com.vulneye.platform.dto.scan.ScanResponse;
+import com.vulneye.platform.dto.scan.ScanSummaryResponse;
 import com.vulneye.platform.dto.scan.UpdateScanStatusRequest;
 import com.vulneye.platform.entity.Asset;
+import com.vulneye.platform.entity.Finding;
 import com.vulneye.platform.entity.Scan;
+import com.vulneye.platform.entity.Vulnerability;
 import com.vulneye.platform.entity.enums.ScanStatus;
 import com.vulneye.platform.exception.ResourceNotFoundException;
 import com.vulneye.platform.repository.AssetRepository;
+import com.vulneye.platform.repository.FindingRepository;
 import com.vulneye.platform.repository.ScanRepository;
+import com.vulneye.platform.repository.VulnerabilityRepository;
+import com.vulneye.platform.service.interfaces.FindingService;
 import com.vulneye.platform.service.interfaces.ScanExecutionService;
 import com.vulneye.platform.service.interfaces.ScanService;
-import org.springframework.stereotype.Service;
-import com.vulneye.platform.scanner.factory.ScannerFactory;
-import com.vulneye.platform.dto.scan.ScanDetailsResponse;
-import com.vulneye.platform.repository.FindingRepository;
-import com.vulneye.platform.repository.VulnerabilityRepository;
-import com.vulneye.platform.dto.scan.ScanSummaryResponse;
-import com.vulneye.platform.entity.Finding;
-import com.vulneye.platform.entity.Vulnerability;
-import com.vulneye.platform.service.FindingService;
-import com.vulneye.platform.service.VulnerabilityService;
-import com.vulneye.platform.dto.common.PageResponse;
 import com.vulneye.platform.util.PageMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +36,6 @@ public class ScanServiceImpl implements ScanService {
     private final FindingRepository findingRepository;
     private final VulnerabilityRepository vulnerabilityRepository;
     private final FindingService findingService;
-    private final VulnerabilityService vulnerabilityService;
 
     public ScanServiceImpl(
             ScanRepository scanRepository,
@@ -46,8 +43,7 @@ public class ScanServiceImpl implements ScanService {
             ScanExecutionService scanExecutionService,
             FindingRepository findingRepository,
             VulnerabilityRepository vulnerabilityRepository,
-            FindingService findingService,
-            VulnerabilityService vulnerabilityService) {
+            FindingService findingService) {
 
         this.scanRepository = scanRepository;
         this.assetRepository = assetRepository;
@@ -55,7 +51,6 @@ public class ScanServiceImpl implements ScanService {
         this.findingRepository = findingRepository;
         this.vulnerabilityRepository = vulnerabilityRepository;
         this.findingService = findingService;
-        this.vulnerabilityService = vulnerabilityService;
     }
 
     @Override
@@ -135,13 +130,9 @@ public class ScanServiceImpl implements ScanService {
                 }
 
                 switch (severity.toUpperCase()) {
-
                     case "CRITICAL" -> critical++;
-
                     case "HIGH" -> high++;
-
                     case "MEDIUM" -> medium++;
-
                     case "LOW" -> low++;
                 }
             }
@@ -156,8 +147,6 @@ public class ScanServiceImpl implements ScanService {
         response.setSummary(summary);
         response.setFindings(
                 findingService.getFindingsByScanId(scanId));
-        response.setVulnerabilities(
-                vulnerabilityService.getVulnerabilitiesByScanId(scanId));
 
         return response;
     }
@@ -176,7 +165,8 @@ public class ScanServiceImpl implements ScanService {
     }
 
     @Override
-    public ScanResponse updateScanStatus(Long id,
+    public ScanResponse updateScanStatus(
+            Long id,
             UpdateScanStatusRequest request) {
 
         Scan scan = scanRepository.findById(id)
