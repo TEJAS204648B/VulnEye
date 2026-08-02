@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.vulneye.platform.dto.scan.ScanDetailsResponse;
+import com.vulneye.platform.dto.common.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -35,12 +37,13 @@ public class ScanController {
 
         @GetMapping
         @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-        public ApiResponse<List<ScanResponse>> getAllScans() {
+        public ApiResponse<PageResponse<ScanResponse>> getAllScans(
+                        Pageable pageable) {
 
                 return new ApiResponse<>(
                                 true,
                                 "Scans retrieved successfully",
-                                scanService.getAllScans());
+                                scanService.getAllScans(pageable));
         }
 
         @GetMapping("/{id}")

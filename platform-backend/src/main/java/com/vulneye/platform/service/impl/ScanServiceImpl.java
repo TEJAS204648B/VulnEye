@@ -21,6 +21,10 @@ import com.vulneye.platform.entity.Finding;
 import com.vulneye.platform.entity.Vulnerability;
 import com.vulneye.platform.service.FindingService;
 import com.vulneye.platform.service.VulnerabilityService;
+import com.vulneye.platform.dto.common.PageResponse;
+import com.vulneye.platform.util.PageMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -76,12 +80,11 @@ public class ScanServiceImpl implements ScanService {
     }
 
     @Override
-    public List<ScanResponse> getAllScans() {
+    public PageResponse<ScanResponse> getAllScans(Pageable pageable) {
 
-        return scanRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        Page<Scan> page = scanRepository.findAll(pageable);
+
+        return PageMapper.map(page, this::mapToResponse);
     }
 
     @Override
