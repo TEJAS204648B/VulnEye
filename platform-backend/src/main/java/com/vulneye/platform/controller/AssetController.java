@@ -8,74 +8,77 @@ import com.vulneye.platform.dto.common.PageResponse;
 import com.vulneye.platform.service.interfaces.AssetService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping("/api/assets")
 public class AssetController {
 
-    private final AssetService assetService;
+        private final AssetService assetService;
 
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
+        public AssetController(AssetService assetService) {
+                this.assetService = assetService;
+        }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
-    public ApiResponse<AssetResponse> createAsset(
-            @Valid @RequestBody CreateAssetRequest request) {
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
+        public ApiResponse<AssetResponse> createAsset(
+                        @Valid @RequestBody CreateAssetRequest request) {
 
-        return new ApiResponse<>(
-                true,
-                "Asset created successfully",
-                assetService.createAsset(request));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Asset created successfully",
+                                assetService.createAsset(request));
+        }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<PageResponse<AssetResponse>> getAllAssets(
-            Pageable pageable) {
+        @GetMapping
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<PageResponse<AssetResponse>> getAllAssets(
+                        Pageable pageable) {
 
-        return new ApiResponse<>(
-                true,
-                "Assets retrieved successfully",
-                assetService.getAllAssets(pageable));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Assets retrieved successfully",
+                                assetService.getAllAssets(pageable));
+        }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
-    public ApiResponse<AssetResponse> getAssetById(
-            @PathVariable Long id) {
+        @GetMapping("/{id}")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST', 'PENTESTER')")
+        public ApiResponse<AssetResponse> getAssetById(
+                        @PathVariable Long id) {
 
-        return new ApiResponse<>(
-                true,
-                "Asset retrieved successfully",
-                assetService.getAssetById(id));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Asset retrieved successfully",
+                                assetService.getAssetById(id));
+        }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
-    public ApiResponse<AssetResponse> updateAsset(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateAssetRequest request) {
+        @PutMapping("/{id}")
+        @PreAuthorize("hasAnyRole('ADMIN', 'ANALYST')")
+        public ApiResponse<AssetResponse> updateAsset(
+                        @PathVariable Long id,
+                        @Valid @RequestBody UpdateAssetRequest request) {
 
-        return new ApiResponse<>(
-                true,
-                "Asset updated successfully",
-                assetService.updateAsset(id, request));
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Asset updated successfully",
+                                assetService.updateAsset(id, request));
+        }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<Void> deleteAsset(
-            @PathVariable Long id) {
+        @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
+        public ApiResponse<Void> deleteAsset(
+                        @PathVariable Long id) {
 
-        assetService.deleteAsset(id);
+                assetService.deleteAsset(id);
 
-        return new ApiResponse<>(
-                true,
-                "Asset deleted successfully",
-                null);
-    }
+                return new ApiResponse<>(
+                                true,
+                                "Asset deleted successfully",
+                                null);
+        }
 }

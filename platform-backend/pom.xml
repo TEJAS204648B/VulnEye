@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0</version>
+        <version>3.5.5</version>
         <relativePath/>
     </parent>
 
@@ -26,9 +26,10 @@
     <dependencies>
 
         <!-- Spring Boot -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -47,6 +48,7 @@
         </dependency>
 
         <!-- MySQL -->
+
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -54,6 +56,7 @@
         </dependency>
 
         <!-- JWT -->
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -74,16 +77,15 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Swagger / OpenAPI -->
+        <!-- Swagger -->
+
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>3.0.0</version>
+            <version>2.8.9</version>
         </dependency>
 
-        <!-- ========================= -->
         <!-- Testing -->
-        <!-- ========================= -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,6 +102,7 @@
     </dependencies>
 
     <build>
+
         <plugins>
 
             <plugin>
@@ -108,6 +111,7 @@
             </plugin>
 
         </plugins>
+
     </build>
 
 </project>
