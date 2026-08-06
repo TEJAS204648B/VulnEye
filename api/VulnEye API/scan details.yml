@@ -1,11 +1,11 @@
 info:
-  name: asset
+  name: scan details
   type: http
-  seq: 3
+  seq: 6
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/assets"
+  url: "{{baseUrl}}/api/scans/38/vulnerabilites"
   headers:
     - name: Authorization
       value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NTY5NzQ0MiwiZXhwIjoxNzg1NzgzODQyfQ.KiRWl8OLyKWpPwYb5qaPQko9ouJfMTB20mWaf-usaVM4iAJ9y1_nKLlsXzi-XZ7sYmSJUUxjYaexjflrSLykOA

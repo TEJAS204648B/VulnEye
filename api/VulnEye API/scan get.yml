@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/scans/2"
+  url: "{{baseUrl}}/api/scans"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NTA4OTk2OCwiZXhwIjoxNzg1MTc2MzY4fQ.wNK6Zg--Pv8_xTDdERSIydmD5_hcXS9F5F2_YO5OSNWaD12BPJ8azvLAlNtJxdlwh1CZ2N6Yv0oagYL0V2Jabg
+      value: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWphcyIsImlhdCI6MTc4NTY5NzQ0MiwiZXhwIjoxNzg1NzgzODQyfQ.KiRWl8OLyKWpPwYb5qaPQko9ouJfMTB20mWaf-usaVM4iAJ9y1_nKLlsXzi-XZ7sYmSJUUxjYaexjflrSLykOA
   auth: inherit
 
 settings:
