@@ -21,6 +21,11 @@
 
     <properties>
         <java.version>21</java.version>
+
+        <!-- SonarCloud -->
+        <sonar.organization>tejas204648b</sonar.organization>
+        <sonar.projectKey>TEJAS204648B_VulnEye</sonar.projectKey>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>

@@ -20,8 +20,11 @@ jobs:
         working-directory: platform-backend
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Java 21
         uses: actions/setup-java@v4
@@ -30,10 +33,21 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Build and Test
-        run: mvn clean verify
+      - name: Cache SonarCloud Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Build, Test & Sonar Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn clean verify sonar:sonar
 
       - name: Upload JaCoCo Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
