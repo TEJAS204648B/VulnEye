@@ -1,6 +1,7 @@
 package com.vulneye.platform.dto;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class ApiResponse<T> {
 
@@ -10,14 +11,14 @@ public class ApiResponse<T> {
     private LocalDateTime timestamp;
 
     public ApiResponse() {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneOffset.UTC);
     }
 
     public ApiResponse(boolean success, String message, T data) {
         this.success = success;
         this.message = message;
         this.data = data;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneOffset.UTC);
     }
 
     public boolean isSuccess() {
