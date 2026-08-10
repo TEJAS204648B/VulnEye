@@ -17,6 +17,7 @@ public class AssetResponse {
     private LocalDateTime updatedAt;
 
     public AssetResponse() {
+        // Required by JPA/Hibernate for entity instantiation.
     }
 
     public Long getId() {
