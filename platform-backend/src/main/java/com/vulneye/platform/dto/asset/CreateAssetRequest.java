@@ -26,6 +26,7 @@ public class CreateAssetRequest {
     private AssetStatus status = AssetStatus.ACTIVE;
 
     public CreateAssetRequest() {
+        // Required by Jackson for JSON deserialization.
     }
 
     public String getName() {
