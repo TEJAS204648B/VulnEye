@@ -12,6 +12,9 @@ public class PageResponse<T> {
     private boolean first;
     private boolean last;
 
+    /**
+     * Default constructor required for object deserialization.
+     */
     public PageResponse() {
     }
 
