@@ -21,6 +21,7 @@ public class FindingResponse {
     private String state;
 
     public FindingResponse() {
+        // Required by Jackson for JSON deserialization.
     }
 
     public String getHostAddress() {
