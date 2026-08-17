@@ -14,6 +14,7 @@ public class CreateScanRequest {
     private ScanType scanType;
 
     public CreateScanRequest() {
+        // Required by Jackson for JSON deserialization.
     }
 
     public Long getAssetId() {
