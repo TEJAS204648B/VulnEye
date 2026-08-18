@@ -19,6 +19,7 @@ public class ScanResponse {
     private LocalDateTime updatedAt;
 
     public ScanResponse() {
+        // Required by Jackson for JSON deserialization.
     }
 
     public Long getId() {
