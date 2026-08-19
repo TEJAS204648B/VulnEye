@@ -9,6 +9,7 @@ public class UpdateScanStatusRequest {
     private ScanStatus status;
 
     public UpdateScanStatusRequest() {
+        // Required by Jackson for JSON deserialization.
     }
 
     public ScanStatus getStatus() {
