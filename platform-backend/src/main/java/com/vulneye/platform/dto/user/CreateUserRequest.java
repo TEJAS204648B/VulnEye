@@ -24,6 +24,7 @@ public class CreateUserRequest {
     private UserRole role;
 
     public CreateUserRequest() {
+        // Default constructor required for request body deserialization.
     }
 
     public String getUsername() {
