@@ -15,6 +15,7 @@ public class UserResponse {
     private LocalDateTime updatedAt;
 
     public UserResponse() {
+        // Default constructor required for response object creation and deserialization.
     }
 
     public Long getId() {
