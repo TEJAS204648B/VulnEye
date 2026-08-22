@@ -3,6 +3,7 @@ package com.vulneye.platform.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class Finding {
 
     @PrePersist
     public void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now(ZoneOffset.UTC);
     }
 
     public Long getId() {
