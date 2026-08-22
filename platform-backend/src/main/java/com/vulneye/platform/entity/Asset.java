@@ -30,6 +30,7 @@ public class Asset extends BaseEntity {
     private AssetStatus status = AssetStatus.ACTIVE;
 
     public Asset() {
+        // Default constructor required by JPA for entity instantiation.
     }
 
     public Long getId() {
