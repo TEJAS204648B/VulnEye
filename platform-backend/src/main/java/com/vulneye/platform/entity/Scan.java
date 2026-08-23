@@ -35,6 +35,7 @@ public class Scan extends BaseEntity {
     private String resultPath;
 
     public Scan() {
+        // Default constructor required for JPA entity instantiation.
     }
 
     public Long getId() {
