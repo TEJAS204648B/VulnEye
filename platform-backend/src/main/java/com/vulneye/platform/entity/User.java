@@ -28,6 +28,7 @@ public class User extends BaseEntity {
     private Boolean isActive = true;
 
     public User() {
+        // Default constructor required for JPA entity instantiation.
     }
 
     public Long getId() {
