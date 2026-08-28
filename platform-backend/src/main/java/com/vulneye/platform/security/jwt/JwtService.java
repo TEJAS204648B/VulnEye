@@ -3,23 +3,24 @@ package com.vulneye.platform.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    // Replace with a secure 256-bit+ secret in production.
-    private static final String SECRET =
-            "ThisIsMyVerySecureSecretKeyForJwtAuthenticationInVulnEyePlatform2026";
+    private static final long JWT_EXPIRATION = 1000L * 60 * 60 * 24; // 24 Hours
 
-    private static final long JWT_EXPIRATION = 1000 * 60 * 60 * 24; // 24 Hours
+    private final SecretKey signingKey;
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    public JwtService(@Value("${JWT_SECRET}") String secret) {
+        this.signingKey = Keys.hmacShaKeyFor(
+                secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(String username) {
@@ -28,7 +29,7 @@ public class JwtService {
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
-                .signWith(getSigningKey())
+                .signWith(signingKey)
                 .compact();
     }
 
@@ -64,7 +65,7 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
 
         return Jwts.parser()
-                .verifyWith(getSigningKey())
+                .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
