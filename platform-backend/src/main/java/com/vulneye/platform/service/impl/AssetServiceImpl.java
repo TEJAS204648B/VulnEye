@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.List;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -136,7 +135,11 @@ public class AssetServiceImpl implements AssetService {
                 return uri.getHost();
             }
 
-            return target.replaceAll("/+$", "");
+            while (target.endsWith("/")) {
+                target = target.substring(0, target.length() - 1);
+            }
+
+            return target;
 
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException("Invalid target");
