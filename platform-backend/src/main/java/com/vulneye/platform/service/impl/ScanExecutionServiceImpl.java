@@ -5,10 +5,11 @@ import com.vulneye.platform.entity.enums.ScanStatus;
 import com.vulneye.platform.repository.ScanRepository;
 import com.vulneye.platform.scanner.factory.ScannerFactory;
 import com.vulneye.platform.service.interfaces.ScanExecutionService;
-import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class ScanExecutionServiceImpl implements ScanExecutionService {
@@ -38,12 +39,12 @@ public class ScanExecutionServiceImpl implements ScanExecutionService {
                     .execute(scan);
 
             scan.setStatus(ScanStatus.COMPLETED);
-            scan.setCompletedAt(LocalDateTime.now());
+            scan.setCompletedAt(LocalDateTime.now(ZoneOffset.UTC));
 
         } catch (Exception ex) {
 
             scan.setStatus(ScanStatus.FAILED);
-            scan.setCompletedAt(LocalDateTime.now());
+            scan.setCompletedAt(LocalDateTime.now(ZoneOffset.UTC));
 
         } finally {
 
